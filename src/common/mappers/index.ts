@@ -1,2 +1,2 @@
-export * from './map-dto-pagination-args-pagination-response';
+export * from './pagination';
 export * from './prisma';

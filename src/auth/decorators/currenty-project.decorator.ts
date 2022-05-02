@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { ICurrentProject } from '../interfaces';
+import { ICurrentProject } from '@/interfaces';
 
 export const CurrentProject = createParamDecorator(
   (data: keyof ICurrentProject, context: ExecutionContext) => {

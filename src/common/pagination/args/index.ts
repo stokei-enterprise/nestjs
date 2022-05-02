@@ -10,7 +10,7 @@ import {
   IWhereData,
   IWhereDataInterval,
   IWhereDataSearch
-} from '../../interfaces';
+} from '@/interfaces';
 
 enum OrderBy {
   ASC = 'asc',

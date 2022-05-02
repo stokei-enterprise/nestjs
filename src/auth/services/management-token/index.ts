@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { IAuthenticatedAccount, IRefreshTokenPayload } from '../../interfaces';
+import { IAuthenticatedAccount, IRefreshTokenPayload } from '@/interfaces';
 
 export interface ITokenConfig {
   readonly expiresIn?: string | number;

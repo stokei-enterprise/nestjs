@@ -5,14 +5,14 @@ import {
   UnauthorizedException
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { isExpiredDate } from '@stokei/shared';
 import {
   ACCESS_TOKEN_HEADER_NAME,
   REFRESH_TOKEN_HEADER_NAME
-} from '../../constants';
-import { InvalidTokenException } from '../../errors';
-import { ManagementTokenService } from '../../services';
-import { extractRefreshToken, extractToken } from '../../utils';
+} from '@/auth/constants';
+import { InvalidTokenException } from '@/errors';
+import { ManagementTokenService } from '@/auth/services';
+import { extractRefreshToken, extractToken } from '@/auth/utils';
+import { isExpiredDate } from '@/utils';
 
 @Injectable()
 export class AuthenticationWithoutExpiresValidationGuard

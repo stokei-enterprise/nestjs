@@ -3,7 +3,7 @@ import {
   IWhereData,
   IWhereDataInterval,
   IWhereDataSearch
-} from '@stokei/common';
+} from '@/interfaces';
 
 export const cleanSortValue = (value: IOrderBy): IOrderBy => {
   switch (value) {

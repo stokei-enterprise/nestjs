@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { IRefreshTokenPayload } from '../interfaces';
+import { IRefreshTokenPayload } from '@/interfaces';
 
 export const CurrentRefreshToken = createParamDecorator(
   (
