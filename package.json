@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsc -p tsconfig.json -w",
     "prebuild": "rimraf dist",
-    "build": "tsc -p tsconfig.json",
+    "build": "nest build",
     "prepare": "tsc -p tsconfig.json",
     "prepublish": "npm run build",
     "format": "prettier --write \"./**/*.ts\"",
