@@ -1,9 +1,9 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { PROJECT_ID_HEADER_NAME } from '@/auth/constants';
-import { ProjectIdNotFoundException } from '@/errors';
-import { ICurrentProject } from '@/interfaces';
+import { PROJECT_ID_HEADER_NAME } from '../../../auth/constants';
+import { ProjectIdNotFoundException } from '../../../errors';
+import { ICurrentProject } from '../../../interfaces';
 
 export interface IProjectGuardConfig {
   readonly isRequired: boolean;

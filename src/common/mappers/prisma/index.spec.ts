@@ -4,7 +4,7 @@ import {
   IWhereData,
   IWhereDataInterval,
   IWhereDataSearch
-} from '@/interfaces';
+} from '../../../interfaces';
 import { PrismaMapper, MAX_LIMIT, MIN_LIMIT } from '.';
 
 describe('PrismaMapper', () => {

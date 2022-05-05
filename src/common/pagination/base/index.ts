@@ -1,6 +1,6 @@
 import { Field, ObjectType, Int, InputType } from '@nestjs/graphql';
 import { Type } from '@nestjs/common';
-import { IPaginatedType, IWhere } from '@/interfaces';
+import { IPaginatedType, IWhere } from '../../../interfaces';
 
 export function Paginated<T>(classRef: Type<T>): Type<IPaginatedType<T>> {
   @ObjectType({ isAbstract: true })

@@ -1,4 +1,4 @@
-import { IPaginatedType, IPaginationListData } from '@/interfaces';
+import { IPaginatedType, IPaginationListData } from '../../../interfaces';
 
 export class PaginationMapper<TItem = any> {
   toPaginationList(data: IPaginationListData<TItem>): IPaginatedType<TItem> {

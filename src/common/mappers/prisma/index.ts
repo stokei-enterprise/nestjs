@@ -4,8 +4,8 @@ import {
   IWhereData,
   IWhereDataInterval,
   IWhereDataSearch
-} from '@/interfaces';
-import { cleanValueNumber } from '@/utils/cleaners';
+} from '../../../interfaces';
+import { cleanValueNumber } from '../../../utils/cleaners';
 
 export const MAX_LIMIT = 1000;
 export const MIN_LIMIT = 1;

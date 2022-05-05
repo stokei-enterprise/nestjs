@@ -1,4 +1,4 @@
-import { ParamNotFoundException } from '@/errors';
+import { ParamNotFoundException } from '../../errors';
 import { HmacSHA512 as hmacSHA512, PBKDF2, lib } from 'crypto-js';
 import * as Base64 from 'crypto-js/enc-base64';
 import * as AES from 'crypto-js/aes';

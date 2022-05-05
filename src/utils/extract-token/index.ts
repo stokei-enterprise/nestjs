@@ -1,4 +1,4 @@
-import { InvalidTokenException } from '@/errors';
+import { InvalidTokenException } from '../../errors';
 
 export const extractToken = (authorization: string): string => {
   if (!authorization) {

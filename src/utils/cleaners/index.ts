@@ -3,7 +3,7 @@ import {
   IWhereData,
   IWhereDataInterval,
   IWhereDataSearch
-} from '@/interfaces';
+} from '../../interfaces';
 
 export const cleanSortValue = (value: IOrderBy): IOrderBy => {
   switch (value) {

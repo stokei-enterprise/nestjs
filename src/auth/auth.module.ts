@@ -1,8 +1,8 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { Services } from './services';
-import { IAuthModuleConfig } from '@/interfaces';
-import { ParamNotFoundException } from '@/errors';
+import { IAuthModuleConfig } from '../interfaces';
+import { ParamNotFoundException } from '../errors';
 
 const providers: Provider<any>[] = [...Services];
 
