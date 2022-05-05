@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "tsc -p tsconfig.json -w",
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "tsc -p tsconfig.json",
     "prepare": "tsc -p tsconfig.json",
     "format": "prettier --write \"./**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
