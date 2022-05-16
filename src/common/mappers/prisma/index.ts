@@ -19,6 +19,17 @@ export class PrismaMapper {
       [dataKey]: dataValue
     }));
   }
+  toWhereIds<TColumnType = string>(columnName: TColumnType, data: string[]) {
+    return (
+      columnName && {
+        [columnName + '']: {
+          ...(data?.length > 0 && {
+            in: data
+          })
+        }
+      }
+    );
+  }
   toWhereData<TColumnType = string, TDataType = string>(
     columnName: TColumnType,
     data: IWhereData<TDataType>
