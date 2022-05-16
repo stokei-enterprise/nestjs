@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'release/*'
+    tags:
+      - '**'
 
   workflow_dispatch:
 
@@ -33,12 +35,26 @@ jobs:
         env:
           CI: true
 
+      - name: Getting version
+        id: versions-variables
+        run: |
+          echo ::set-output name=VERSION_NAME::${GITHUB_REF#refs/*/}
+          echo ::set-output name=VERSION_NUMBER::$(echo "refs/tags/v0.3.1" | cut -d / -f 3 | awk '{sub(/v/,"")}1')
+
+      - name: Check output version
+        env:
+          RELEASE_VERSION: ${{ steps.versions-variables.outputs.VERSION_NAME }}
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ steps.versions-variables.outputs.VERSION_NUMBER }}
+
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
+      - run: npm version ${{ steps.versions-variables.outputs.VERSION_NUMBER }}
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
