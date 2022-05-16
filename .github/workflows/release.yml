@@ -39,7 +39,7 @@ jobs:
         id: versions-variables
         run: |
           echo ::set-output name=VERSION_NAME::${GITHUB_REF#refs/*/}
-          echo ::set-output name=VERSION_NUMBER::$(echo "refs/tags/v0.3.1" | cut -d / -f 3 | awk '{sub(/v/,"")}1')
+          echo ::set-output name=VERSION_NUMBER::$(echo $GITHUB_REF | cut -d / -f 3 | awk '{sub(/v/,"")}1')
 
       - name: Check output version
         env:
