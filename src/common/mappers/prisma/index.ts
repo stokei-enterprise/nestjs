@@ -81,7 +81,7 @@ export class PrismaMapper {
             columnName + ''
           ],
           ...(data?.search && {
-            contains: data?.search,
+            search: data?.search,
             mode: 'insensitive'
           }),
           ...(data?.startsWith && {
