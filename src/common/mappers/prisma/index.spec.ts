@@ -29,6 +29,22 @@ describe('PrismaMapper', () => {
     });
   });
 
+  describe('toWhereIds', () => {
+    it('should return correct data where ids values', async () => {
+      const columnName = 'name';
+      const dataMock: string[] = ['id1', 'id2', 'id3'];
+      const responseMock = {
+        [columnName]: {
+          in: dataMock
+        }
+      };
+
+      expect(new PrismaMapper().toWhereIds(columnName, dataMock)).toStrictEqual(
+        responseMock
+      );
+    });
+  });
+
   describe('toWhereData', () => {
     it('should return correct data where values', async () => {
       const columnName = 'name';
@@ -94,7 +110,7 @@ describe('PrismaMapper', () => {
       };
       const responseMock = {
         [columnName]: {
-          contains: name,
+          search: name,
           mode
         }
       };
