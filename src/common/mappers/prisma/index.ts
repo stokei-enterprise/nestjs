@@ -80,8 +80,8 @@ export class PrismaMapper {
           ...this.toWhereData<TColumnType, TDataType>(columnName, data?.equals)[
             columnName + ''
           ],
-          ...(data?.search && {
-            search: data?.search,
+          ...(data?.contains && {
+            contains: data?.contains,
             mode: 'insensitive'
           }),
           ...(data?.startsWith && {
