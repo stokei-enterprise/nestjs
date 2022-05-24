@@ -106,11 +106,11 @@ describe('PrismaMapper', () => {
       const name = 'Jhon Doe';
       const columnName = 'name';
       const dataMock: IWhereDataSearch<string> = {
-        search: name
+        contains: name
       };
       const responseMock = {
         [columnName]: {
-          search: name,
+          contains: name,
           mode
         }
       };
