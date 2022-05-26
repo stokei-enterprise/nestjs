@@ -106,7 +106,7 @@ describe('PrismaMapper', () => {
       const name = 'Jhon Doe';
       const columnName = 'name';
       const dataMock: IWhereDataSearch<string> = {
-        contains: name
+        search: name
       };
       const responseMock = {
         [columnName]: {

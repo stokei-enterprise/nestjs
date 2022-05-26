@@ -9,7 +9,7 @@ export interface IWhereData<TDataType = string> {
 
 export interface IWhereDataSearch<TDataType = string>
   extends IWhereData<TDataType> {
-  contains?: TDataType;
+  search?: TDataType;
   startsWith?: TDataType;
   endsWith?: TDataType;
 }

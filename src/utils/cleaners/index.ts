@@ -142,7 +142,7 @@ export const cleanWhereDataSearch = (
 ): IWhereDataSearch<string> => {
   return {
     equals: cleanValue(data?.equals),
-    contains: cleanValue(data?.contains),
+    search: cleanValue(data?.search),
     startsWith: cleanValue(data?.startsWith),
     endsWith: cleanValue(data?.endsWith)
   };
