@@ -24,11 +24,7 @@ describe('PaginationMapper', () => {
     expect(
       new PaginationMapper().toPaginationList({
         items,
-        totalCount,
-        page: {
-          limit: 5,
-          number: 1
-        }
+        totalCount
       })
     ).toStrictEqual(responseMock);
   });

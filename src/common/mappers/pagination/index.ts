@@ -5,9 +5,7 @@ export class PaginationMapper<TItem = any> {
     const limit = data?.page?.limit > 0 ? data?.page?.limit : 0;
     let totalPages = 1;
     if (data?.totalCount > 0) {
-      if (!limit) {
-        totalPages = data?.totalCount;
-      } else {
+      if (limit > 0) {
         totalPages = Math.ceil(data?.totalCount / limit);
       }
     }
