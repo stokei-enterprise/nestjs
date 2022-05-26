@@ -86,6 +86,21 @@ export const cleanObject = <TData = any>(
   if (!data) {
     return undefined;
   }
+  const isArrayData = Array.isArray(data);
+
+  if (isArrayData) {
+    const isEmptyData = data?.length > 0;
+    if (!isEmptyData) {
+      return undefined;
+    }
+    return data.map((currentData) => {
+      if (typeof currentData === 'object') {
+        return cleanObject(currentData, isAllowEmptyValue);
+      }
+      return currentData;
+    });
+  }
+
   const dataArray = Object.entries(data);
   const isEmptyData = dataArray?.length > 0;
   if (!isEmptyData) {
