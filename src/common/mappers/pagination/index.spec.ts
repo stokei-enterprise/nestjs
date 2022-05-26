@@ -33,6 +33,27 @@ describe('PaginationMapper', () => {
     ).toStrictEqual(responseMock);
   });
 
+  it('should show default values when items not found', async () => {
+    const responseMock = {
+      items: [],
+      totalCount: 0,
+      currentPage: 1,
+      totalPages: 1,
+      firstPage: 1,
+      lastPage: 1,
+      nextPage: 1,
+      previousPage: 1,
+      hasNextPage: false,
+      hasPreviousPage: false
+    };
+    expect(
+      new PaginationMapper().toPaginationList({
+        items: [],
+        totalCount: 0
+      })
+    ).toStrictEqual(responseMock);
+  });
+
   it('should show first page with 3 items', async () => {
     const responseMock = {
       items: items.slice(0, 3),

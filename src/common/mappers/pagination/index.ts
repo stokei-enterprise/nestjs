@@ -2,10 +2,20 @@ import { IPaginatedType, IPaginationListData } from '../../../interfaces';
 
 export class PaginationMapper<TItem = any> {
   toPaginationList(data: IPaginationListData<TItem>): IPaginatedType<TItem> {
-    const totalPages = Math.ceil(data?.totalCount / data?.page?.limit);
-    const currentPage = data?.page?.number;
+    const limit = data?.page?.limit > 0 ? data?.page?.limit : 0;
+    let totalPages = 1;
+    if (data?.totalCount > 0) {
+      if (!limit) {
+        totalPages = data?.totalCount;
+      } else {
+        totalPages = Math.ceil(data?.totalCount / limit);
+      }
+    }
+
     const firstPage = 1;
-    const lastPage = totalPages > 0 ? totalPages : totalPages;
+    const currentPage =
+      data?.page?.number > firstPage ? data?.page?.number : firstPage;
+    const lastPage = totalPages > 0 ? totalPages : firstPage;
     const hasNextPage = currentPage < lastPage;
     const hasPreviousPage = currentPage > firstPage;
     const nextPage = hasNextPage ? currentPage + 1 : lastPage;
