@@ -1,6 +1,7 @@
 import {
   IBaseOrderByData,
   IPaginationArgsToPrismaDataPaginationPrismaMapper,
+  IWhere,
   IWhereData,
   IWhereDataInterval,
   IWhereDataSearch
@@ -45,8 +46,91 @@ describe('PrismaMapper', () => {
     });
   });
 
+  describe('toWhere', () => {
+    it('should return correct where values', async () => {
+      const dataMock: IWhere<Record<string, IWhereData>> = {
+        AND: {
+          teste: {
+            equals: 'meu teste'
+          }
+        },
+        NOT: undefined,
+        OR: undefined
+      };
+      const responseMock = {
+        AND: {
+          teste: {
+            equals: 'meu teste'
+          }
+        }
+      };
+
+      expect(new PrismaMapper().toWhere(dataMock)).toStrictEqual(responseMock);
+    });
+    it('should remove data when data is empty', async () => {
+      const dataMock: IWhere<Record<string, IWhereData<string | number>>> = {
+        AND: {
+          teste: {
+            equals: 'meu teste'
+          },
+          age: {
+            equals: undefined
+          }
+        },
+        NOT: {
+          teste: {
+            equals: ''
+          }
+        },
+        OR: undefined
+      };
+      const responseMock = {
+        AND: {
+          teste: {
+            equals: 'meu teste'
+          }
+        }
+      };
+
+      expect(new PrismaMapper().toWhere(dataMock)).toStrictEqual(responseMock);
+    });
+    it('should return correct data with empty values in NOT option', async () => {
+      const dataMock: IWhere<Record<string, IWhereData>> = {
+        AND: {
+          teste: {
+            equals: 'meu teste'
+          }
+        },
+        NOT: {
+          teste: {
+            equals: ''
+          }
+        },
+        OR: undefined
+      };
+      const responseMock = {
+        AND: {
+          teste: {
+            equals: 'meu teste'
+          }
+        },
+        NOT: {
+          teste: {
+            equals: ''
+          }
+        }
+      };
+
+      expect(
+        new PrismaMapper().toWhere(dataMock, {
+          NOT: true
+        })
+      ).toStrictEqual(responseMock);
+    });
+  });
+
   describe('toWhereData', () => {
-    it('should return correct data where values', async () => {
+    it('should return correct where values', async () => {
       const columnName = 'name';
       const dataMock: IWhereData<string> = {
         equals: 'Jhon'
@@ -63,7 +147,7 @@ describe('PrismaMapper', () => {
     });
   });
   describe('toWhereDataInterval', () => {
-    it('should return correct data where values are less and equal or greater and equal to range', async () => {
+    it('should return correct where values are less and equal or greater and equal to range', async () => {
       const columnName = 'age';
       const dataMock: IWhereDataInterval<number> = {
         lessEquals: 50,
@@ -81,7 +165,7 @@ describe('PrismaMapper', () => {
       ).toStrictEqual(responseMock);
     });
 
-    it('should return correct data where values are less than or greater than the range', async () => {
+    it('should return correct where values are less than or greater than the range', async () => {
       const columnName = 'age';
       const dataMock: IWhereDataInterval<number> = {
         less: 50,

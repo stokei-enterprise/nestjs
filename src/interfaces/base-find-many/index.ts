@@ -28,6 +28,11 @@ export interface IWhere<TDataType = Record<string, string>> {
   AND?: TDataType;
   NOT?: TDataType;
 }
+export interface IWhereAllowIsEmptyValues {
+  OR?: boolean;
+  AND?: boolean;
+  NOT?: boolean;
+}
 
 export interface IBaseFindManyDTO<
   TWhereData = any,

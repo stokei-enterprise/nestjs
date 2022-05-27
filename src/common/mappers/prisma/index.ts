@@ -1,11 +1,14 @@
 import {
   IBaseOrderByData,
+  IOperator,
   IPaginationArgsToPrismaDataPaginationPrismaMapper,
+  IWhere,
+  IWhereAllowIsEmptyValues,
   IWhereData,
   IWhereDataInterval,
   IWhereDataSearch
 } from '../../../interfaces';
-import { cleanValueNumber } from '../../../utils/cleaners';
+import { cleanObject, cleanValueNumber } from '../../../utils/cleaners';
 
 export const MAX_LIMIT = 1000;
 export const MIN_LIMIT = 1;
@@ -18,6 +21,32 @@ export class PrismaMapper {
     return Object.entries(data).map(([dataKey, dataValue]) => ({
       [dataKey]: dataValue
     }));
+  }
+  toWhere<TDataType = IWhere>(
+    data: TDataType,
+    allowIsEmptyValues?: IWhereAllowIsEmptyValues
+  ) {
+    const mapDTODataToPrisma = (operator: IOperator) => {
+      let operatorData: any = data?.[operator];
+      if (!operatorData) {
+        return null;
+      }
+      if (operator === 'OR') {
+        operatorData = Object.entries(operatorData).map(
+          ([currentOperatorDataKey, currentOperatorDataValue]) => ({
+            [currentOperatorDataKey]: currentOperatorDataValue
+          })
+        );
+      }
+      return {
+        [operator]: operatorData
+      };
+    };
+    return {
+      ...cleanObject(mapDTODataToPrisma('AND'), allowIsEmptyValues?.AND),
+      ...cleanObject(mapDTODataToPrisma('OR'), allowIsEmptyValues?.OR),
+      ...cleanObject(mapDTODataToPrisma('NOT'), allowIsEmptyValues?.NOT)
+    };
   }
   toWhereIds<TColumnType = string>(columnName: TColumnType, data: string[]) {
     return (
