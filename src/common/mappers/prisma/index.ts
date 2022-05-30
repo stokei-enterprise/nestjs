@@ -10,7 +10,7 @@ import {
 } from '../../../interfaces';
 import { cleanObject, cleanValueNumber } from '../../../utils/cleaners';
 
-export const MAX_LIMIT = 1000;
+export const MAX_LIMIT = 20;
 export const MIN_LIMIT = 1;
 
 export class PrismaMapper {
@@ -133,7 +133,7 @@ export class PrismaMapper {
     const pageNumber = cleanValueNumber(data?.page.number) || 1;
 
     limit = limit >= MIN_LIMIT && limit <= MAX_LIMIT ? limit : MAX_LIMIT;
-    const skip = pageNumber > 1 ? pageNumber * limit - 1 : 0;
+    const skip = pageNumber > 1 ? (pageNumber - 1) * limit : 0;
     return {
       skip,
       take: limit

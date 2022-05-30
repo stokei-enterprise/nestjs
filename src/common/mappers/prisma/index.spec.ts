@@ -275,6 +275,39 @@ describe('PrismaMapper', () => {
       expect(new PrismaMapper().toPagination(dataMock)).toStrictEqual(
         responseMock
       );
+      expect(
+        new PrismaMapper().toPagination({
+          page: {
+            limit: 2,
+            number: 2
+          }
+        })
+      ).toStrictEqual({
+        skip: 2,
+        take: 2
+      });
+      expect(
+        new PrismaMapper().toPagination({
+          page: {
+            limit: 2,
+            number: 3
+          }
+        })
+      ).toStrictEqual({
+        skip: 4,
+        take: 2
+      });
+      expect(
+        new PrismaMapper().toPagination({
+          page: {
+            limit: 2,
+            number: 4
+          }
+        })
+      ).toStrictEqual({
+        skip: 6,
+        take: 2
+      });
     });
     it('should return MAX LIMIT when limit is exceeded', async () => {
       const dataMock: IPaginationArgsToPrismaDataPaginationPrismaMapper = {
