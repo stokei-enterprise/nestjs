@@ -33,15 +33,12 @@ describe('PrismaMapper', () => {
 
   describe('toWhereIds', () => {
     it('should return correct data where ids values', async () => {
-      const columnName = 'name';
       const dataMock: string[] = ['id1', 'id2', 'id3'];
       const responseMock = {
-        [columnName]: {
-          in: dataMock
-        }
+        in: dataMock
       };
 
-      expect(new PrismaMapper().toWhereIds(columnName, dataMock)).toStrictEqual(
+      expect(new PrismaMapper().toWhereIds(dataMock)).toStrictEqual(
         responseMock
       );
     });
@@ -132,56 +129,47 @@ describe('PrismaMapper', () => {
 
   describe('toWhereData', () => {
     it('should return correct where values', async () => {
-      const columnName = 'name';
       const dataMock: IWhereData<string> = {
         equals: 'Jhon'
       };
       const responseMock = {
-        [columnName]: {
-          equals: 'Jhon'
-        }
+        equals: 'Jhon'
       };
 
-      expect(
-        new PrismaMapper().toWhereData(columnName, dataMock)
-      ).toStrictEqual(responseMock);
+      expect(new PrismaMapper().toWhereData(dataMock)).toStrictEqual(
+        responseMock
+      );
     });
   });
   describe('toWhereDataInterval', () => {
     it('should return correct where values are less and equal or greater and equal to range', async () => {
-      const columnName = 'age';
       const dataMock: IWhereDataInterval<number> = {
         lessEquals: 50,
         greaterEquals: 18
       };
       const responseMock = {
-        [columnName]: {
-          lte: 50,
-          gte: 18
-        }
+        lte: 50,
+        gte: 18
       };
 
-      expect(
-        new PrismaMapper().toWhereDataInterval(columnName, dataMock)
-      ).toStrictEqual(responseMock);
+      expect(new PrismaMapper().toWhereDataInterval(dataMock)).toStrictEqual(
+        responseMock
+      );
     });
 
     it('should return correct where values are less than or greater than the range', async () => {
-      const columnName = 'age';
       const dataMock: IWhereDataInterval<number> = {
         less: 50,
         greater: 18
       };
       const responseMock = {
-        [columnName]: {
-          lt: 50,
-          gt: 18
-        }
+        lt: 50,
+        gt: 18
       };
 
-      expect(
-        new PrismaMapper().toWhereDataInterval(columnName, dataMock)
-      ).toStrictEqual(responseMock);
+      expect(new PrismaMapper().toWhereDataInterval(dataMock)).toStrictEqual(
+        responseMock
+      );
     });
   });
 
@@ -189,74 +177,62 @@ describe('PrismaMapper', () => {
     const mode = 'insensitive';
     it('should return the correct search value', async () => {
       const name = 'Jhon Doe';
-      const columnName = 'name';
       const dataMock: IWhereDataSearch<string> = {
         search: name
       };
       const responseMock = {
-        [columnName]: {
-          contains: name,
-          mode
-        }
+        contains: name,
+        mode
       };
 
-      expect(
-        new PrismaMapper().toWhereDataSearch(columnName, dataMock)
-      ).toStrictEqual(responseMock);
+      expect(new PrismaMapper().toWhereDataSearch(dataMock)).toStrictEqual(
+        responseMock
+      );
     });
     it('should return the correct startsWith value', async () => {
       const name = 'Jhon';
-      const columnName = 'name';
       const dataMock: IWhereDataSearch<string> = {
         startsWith: name
       };
       const responseMock = {
-        [columnName]: {
-          startsWith: name,
-          mode
-        }
+        startsWith: name,
+        mode
       };
 
-      expect(
-        new PrismaMapper().toWhereDataSearch(columnName, dataMock)
-      ).toStrictEqual(responseMock);
+      expect(new PrismaMapper().toWhereDataSearch(dataMock)).toStrictEqual(
+        responseMock
+      );
     });
     it('should return the correct endsWith value', async () => {
       const name = 'Due';
-      const columnName = 'name';
       const dataMock: IWhereDataSearch<string> = {
         endsWith: name
       };
       const responseMock = {
-        [columnName]: {
-          endsWith: name,
-          mode
-        }
+        endsWith: name,
+        mode
       };
 
-      expect(
-        new PrismaMapper().toWhereDataSearch(columnName, dataMock)
-      ).toStrictEqual(responseMock);
+      expect(new PrismaMapper().toWhereDataSearch(dataMock)).toStrictEqual(
+        responseMock
+      );
     });
     it('should return the correct startsWith and endsWith value', async () => {
       const firstname = 'Jhon';
       const lastname = 'Due';
-      const columnName = 'name';
       const dataMock: IWhereDataSearch<string> = {
         startsWith: firstname,
         endsWith: lastname
       };
       const responseMock = {
-        [columnName]: {
-          startsWith: firstname,
-          endsWith: lastname,
-          mode
-        }
+        startsWith: firstname,
+        endsWith: lastname,
+        mode
       };
 
-      expect(
-        new PrismaMapper().toWhereDataSearch(columnName, dataMock)
-      ).toStrictEqual(responseMock);
+      expect(new PrismaMapper().toWhereDataSearch(dataMock)).toStrictEqual(
+        responseMock
+      );
     });
   });
 

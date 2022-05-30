@@ -50,82 +50,53 @@ export class PrismaMapper {
       ...cleanObject(mapDTODataToPrisma('NOT'), allowIsEmptyValues?.NOT)
     };
   }
-  toWhereIds<TColumnType = string>(columnName: TColumnType, data: string[]) {
+  toWhereIds(data: string[]) {
     return (
-      columnName && {
-        [columnName + '']: {
-          ...(data?.length > 0 && {
-            in: data
-          })
-        }
+      data?.length > 0 && {
+        in: data
       }
     );
   }
-  toWhereData<TColumnType = string, TDataType = string>(
-    columnName: TColumnType,
-    data: IWhereData<TDataType>
-  ) {
+  toWhereData<TDataType = string>(data: IWhereData<TDataType>) {
     return (
-      columnName && {
-        [columnName + '']: {
-          ...(data?.equals && {
-            equals: data?.equals
-          })
-        }
+      data?.equals && {
+        equals: data?.equals
       }
     );
   }
-  toWhereDataInterval<TColumnType = string, TDataType = string>(
-    columnName: TColumnType,
-    data: IWhereDataInterval<TDataType>
-  ) {
-    return (
-      columnName && {
-        [columnName + '']: {
-          ...this.toWhereData<TColumnType, TDataType>(columnName, data?.equals)[
-            columnName + ''
-          ],
-          ...(data?.less && {
-            lt: data?.less
-          }),
-          ...(data?.lessEquals && {
-            lte: data?.lessEquals
-          }),
-          ...(data?.greater && {
-            gt: data?.greater
-          }),
-          ...(data?.greaterEquals && {
-            gte: data?.greaterEquals
-          })
-        }
-      }
-    );
+  toWhereDataInterval<TDataType = string>(data: IWhereDataInterval<TDataType>) {
+    return {
+      ...this.toWhereData<TDataType>(data?.equals),
+      ...(data?.less && {
+        lt: data?.less
+      }),
+      ...(data?.lessEquals && {
+        lte: data?.lessEquals
+      }),
+      ...(data?.greater && {
+        gt: data?.greater
+      }),
+      ...(data?.greaterEquals && {
+        gte: data?.greaterEquals
+      })
+    };
   }
-  toWhereDataSearch<TColumnType = string, TDataType = string>(
-    columnName: TColumnType,
-    data: IWhereDataSearch<TDataType>
-  ) {
-    return (
-      columnName && {
-        [columnName + '']: {
-          ...this.toWhereData<TColumnType, TDataType>(columnName, data?.equals)[
-            columnName + ''
-          ],
-          ...(data?.search && {
-            contains: data?.search,
-            mode: 'insensitive'
-          }),
-          ...(data?.startsWith && {
-            startsWith: data?.startsWith,
-            mode: 'insensitive'
-          }),
-          ...(data?.endsWith && {
-            endsWith: data?.endsWith,
-            mode: 'insensitive'
-          })
-        }
-      }
-    );
+  toWhereDataSearch<TDataType = string>(data: IWhereDataSearch<TDataType>) {
+    return {
+      ...this.toWhereData<TDataType>(data?.equals),
+      ...(data?.search && {
+        contains: data?.search,
+        mode: 'insensitive'
+      }),
+      ...(data?.startsWith && {
+        startsWith: data?.startsWith,
+        mode: 'insensitive'
+      }),
+      ...(data?.endsWith && {
+        endsWith: data?.endsWith,
+        mode: 'insensitive'
+      })
+    };
   }
   toPagination(data: IPaginationArgsToPrismaDataPaginationPrismaMapper) {
     if (!data?.page) {
