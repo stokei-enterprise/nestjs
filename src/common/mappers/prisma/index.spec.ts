@@ -6,7 +6,8 @@ import {
   IWhereDataInterval,
   IWhereDataSearch
 } from '../../../interfaces';
-import { PrismaMapper, MAX_LIMIT, MIN_LIMIT } from '.';
+import { PrismaMapper } from '.';
+import { MAX_PAGE_LIMIT, MIN_PAGE_LIMIT } from '../../../constants/pagination';
 
 describe('PrismaMapper', () => {
   describe('toOrderBy', () => {
@@ -312,13 +313,13 @@ describe('PrismaMapper', () => {
     it('should return MAX LIMIT when limit is exceeded', async () => {
       const dataMock: IPaginationArgsToPrismaDataPaginationPrismaMapper = {
         page: {
-          limit: MAX_LIMIT + 1,
+          limit: MAX_PAGE_LIMIT + 1,
           number: 1
         }
       };
       const responseMock = {
         skip: 0,
-        take: MAX_LIMIT
+        take: MAX_PAGE_LIMIT
       };
 
       expect(new PrismaMapper().toPagination(dataMock)).toStrictEqual(
@@ -328,13 +329,13 @@ describe('PrismaMapper', () => {
     it('should return MAX LIMIT when limit is negative', async () => {
       const dataMock: IPaginationArgsToPrismaDataPaginationPrismaMapper = {
         page: {
-          limit: MIN_LIMIT - 1,
+          limit: MIN_PAGE_LIMIT - 1,
           number: 1
         }
       };
       const responseMock = {
         skip: 0,
-        take: MAX_LIMIT
+        take: MAX_PAGE_LIMIT
       };
 
       expect(new PrismaMapper().toPagination(dataMock)).toStrictEqual(

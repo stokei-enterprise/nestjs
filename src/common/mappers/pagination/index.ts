@@ -1,8 +1,9 @@
+import { cleanValueNumber, getPageLimit } from '../../../utils';
 import { IPaginatedType, IPaginationListData } from '../../../interfaces';
 
 export class PaginationMapper<TItem = any> {
   toPaginationList(data: IPaginationListData<TItem>): IPaginatedType<TItem> {
-    const limit = data?.page?.limit > 0 ? data?.page?.limit : 0;
+    const limit = getPageLimit(cleanValueNumber(data?.page?.limit));
     let totalPages = 1;
     if (data?.totalCount > 0) {
       if (limit > 0) {

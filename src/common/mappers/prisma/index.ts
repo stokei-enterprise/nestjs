@@ -8,10 +8,12 @@ import {
   IWhereDataInterval,
   IWhereDataSearch
 } from '../../../interfaces';
-import { cleanObject, cleanValueNumber } from '../../../utils/cleaners';
-
-export const MAX_LIMIT = 20;
-export const MIN_LIMIT = 1;
+import {
+  cleanObject,
+  cleanValueNumber,
+  getPageLimit,
+  getPageSkip
+} from '../../../utils';
 
 export class PrismaMapper {
   toOrderBy(data: IBaseOrderByData) {
@@ -129,11 +131,9 @@ export class PrismaMapper {
     if (!data?.page) {
       return null;
     }
-    let limit = cleanValueNumber(data?.page.limit);
+    const limit = getPageLimit(cleanValueNumber(data?.page.limit));
     const pageNumber = cleanValueNumber(data?.page.number) || 1;
-
-    limit = limit >= MIN_LIMIT && limit <= MAX_LIMIT ? limit : MAX_LIMIT;
-    const skip = pageNumber > 1 ? (pageNumber - 1) * limit : 0;
+    const skip = getPageSkip(pageNumber, limit);
     return {
       skip,
       take: limit
