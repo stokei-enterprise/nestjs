@@ -6,5 +6,4 @@ export * from './base-find-many';
 export * from './base-service';
 export * from './paginated';
 export * from './prisma';
-export * from './project';
 export * from './refresh-token';
