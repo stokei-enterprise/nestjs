@@ -14,6 +14,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Setup npm registry
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
       - name: Prettify code
         uses: creyD/prettier_action@v3.3
         with:
@@ -22,16 +31,25 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Unit tests
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install
-      - run: npm run test
-      - run: npm run build
+      - name: Eslint
+        run: npm run lint
         env:
           CI: true
 
+      - name: Unit tests
+        run: npm run test
+        env:
+          CI: true
+
+      - name: Building
+        run: npm run build
+        env:
+          CI: true
+  CD:
+    name: CD
+    needs: [CI]
+    runs-on: ubuntu-latest
+    steps:
       - name: Getting version
         id: versions-variables
         run: |
@@ -45,13 +63,10 @@ jobs:
           echo $RELEASE_VERSION
           echo ${{ steps.versions-variables.outputs.VERSION_NUMBER }}
 
-      # Setup .npmrc file to publish to npm
-      - uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
-      - run: npm version ${{ steps.versions-variables.outputs.VERSION_NUMBER }} --no-git-tag-version --force
-      - run: npm publish --access public
+      - name: Setup package version
+        run: npm version ${{ steps.versions-variables.outputs.VERSION_NUMBER }} --no-git-tag-version --force
+
+      - name: Publishing package
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
