@@ -45,11 +45,7 @@ jobs:
         run: npm run build
         env:
           CI: true
-  CD:
-    name: CD
-    needs: [CI]
-    runs-on: ubuntu-latest
-    steps:
+
       - name: Getting version
         id: versions-variables
         run: |
