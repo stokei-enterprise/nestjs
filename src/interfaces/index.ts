@@ -1,5 +1,6 @@
 export * from './auth-module';
 export * from './authenticated-account';
+export * from './authentication-config';
 export * from './base-count';
 export * from './base-repository';
 export * from './base-find-many';
