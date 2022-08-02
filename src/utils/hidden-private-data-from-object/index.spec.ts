@@ -1,4 +1,4 @@
-import { hiddenPrivateDataFromObject, HIDDEN_DATA_STRING } from '.';
+import { HIDDEN_DATA_STRING, hiddenPrivateDataFromObject } from '.';
 
 describe('hiddenPrivateDataFromObject', () => {
   afterEach(() => {

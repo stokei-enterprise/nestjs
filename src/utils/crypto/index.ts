@@ -1,8 +1,9 @@
-import { ParamNotFoundException } from '../../errors';
-import { HmacSHA512 as hmacSHA512, PBKDF2, lib } from 'crypto-js';
-import * as Base64 from 'crypto-js/enc-base64';
+import { HmacSHA512 as hmacSHA512, lib, PBKDF2 } from 'crypto-js';
 import * as AES from 'crypto-js/aes';
+import * as Base64 from 'crypto-js/enc-base64';
 import { v4 as uuid } from 'uuid';
+
+import { ParamNotFoundException } from '../../errors';
 
 export const encryptPassword = (
   password: string,

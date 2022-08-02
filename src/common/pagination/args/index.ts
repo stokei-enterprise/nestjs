@@ -1,10 +1,11 @@
 import {
-  InputType,
   Field,
   Float,
+  InputType,
   Int,
   registerEnumType
 } from '@nestjs/graphql';
+
 import {
   IPaginatinInputDTO,
   IWhereData,

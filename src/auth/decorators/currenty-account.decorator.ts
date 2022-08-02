@@ -1,16 +1,14 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { GqlExecutionContext } from '@nestjs/graphql';
+
 import { IAuthenticatedAccount } from '../../interfaces';
+import { extractRequestFromContext } from '../../utils/extract-request-from-context';
 
 export const CurrentAccount = createParamDecorator(
   (
     data: keyof IAuthenticatedAccount,
     context: ExecutionContext
   ): IAuthenticatedAccount => {
-    const request =
-      context.getType() === 'http'
-        ? context.switchToHttp().getRequest()
-        : GqlExecutionContext.create(context).getContext().req;
+    const request = extractRequestFromContext(context);
     if (data) {
       return request.user && request.user[data];
     }

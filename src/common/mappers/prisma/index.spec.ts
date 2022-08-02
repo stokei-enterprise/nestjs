@@ -1,3 +1,4 @@
+import { MAX_PAGE_LIMIT, MIN_PAGE_LIMIT } from '../../../constants/pagination';
 import {
   IBaseOrderByData,
   IPaginationArgsToPrismaDataPaginationPrismaMapper,
@@ -7,7 +8,6 @@ import {
   IWhereDataSearch
 } from '../../../interfaces';
 import { PrismaMapper } from '.';
-import { MAX_PAGE_LIMIT, MIN_PAGE_LIMIT } from '../../../constants/pagination';
 
 describe('PrismaMapper', () => {
   describe('toOrderBy', () => {

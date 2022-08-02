@@ -5,23 +5,25 @@ import {
   UnauthorizedException
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { GqlExecutionContext } from '@nestjs/graphql';
-import { AUTHENTICATION_CONFIG } from '../../decorators/authentication-config.decorator';
+
+import { InvalidTokenException } from '../../../errors';
 import {
   IAuthenticatedAccount,
   IAuthenticationConfig,
   IRefreshTokenPayload
 } from '../../../interfaces';
-import { InvalidTokenException } from '../../../errors';
 import {
   extractRefreshToken,
   extractToken,
+  isBoolean,
   isExpiredDate
 } from '../../../utils';
+import { extractRequestFromContext } from '../../../utils/extract-request-from-context';
 import {
   ACCESS_TOKEN_HEADER_NAME,
   REFRESH_TOKEN_HEADER_NAME
 } from '../../constants';
+import { AUTHENTICATION_CONFIG } from '../../decorators/authentication-config.decorator';
 import { ITokenResponse, ManagementTokenService } from '../../services';
 
 @Injectable()
@@ -30,11 +32,9 @@ export class AuthenticatedGuard implements CanActivate {
     private managementTokenService: ManagementTokenService,
     private reflector: Reflector
   ) {}
+
   getRequest(context: ExecutionContext) {
-    if (context.getType() === 'http') {
-      return context.switchToHttp().getRequest();
-    }
-    return GqlExecutionContext.create(context).getContext().req;
+    return extractRequestFromContext(context);
   }
 
   async canActivate(context: ExecutionContext) {
@@ -43,6 +43,14 @@ export class AuthenticatedGuard implements CanActivate {
       AUTHENTICATION_CONFIG,
       [context.getHandler(), context.getClass()]
     );
+
+    config.hasExpiresValidation = isBoolean(config?.hasExpiresValidation)
+      ? !!config?.hasExpiresValidation
+      : true;
+
+    config.isRequired = isBoolean(config?.isRequired)
+      ? !!config?.isRequired
+      : true;
 
     let user: IAuthenticatedAccount & ITokenResponse;
     let refreshTokenDecoded: IRefreshTokenPayload & ITokenResponse;
