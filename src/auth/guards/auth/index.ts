@@ -39,18 +39,18 @@ export class AuthenticatedGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const request = this.getRequest(context);
-    const config = this.reflector.getAllAndOverride<IAuthenticationConfig>(
+    let config = this.reflector.getAllAndOverride<IAuthenticationConfig>(
       AUTHENTICATION_CONFIG,
       [context.getHandler(), context.getClass()]
     );
 
-    config.hasExpiresValidation = isBoolean(config?.hasExpiresValidation)
-      ? !!config?.hasExpiresValidation
-      : true;
-
-    config.isRequired = isBoolean(config?.isRequired)
-      ? !!config?.isRequired
-      : true;
+    config = {
+      ...config,
+      hasExpiresValidation: isBoolean(config?.hasExpiresValidation)
+        ? !!config?.hasExpiresValidation
+        : true,
+      isRequired: isBoolean(config?.isRequired) ? !!config?.isRequired : true
+    };
 
     let user: IAuthenticatedAccount & ITokenResponse;
     let refreshTokenDecoded: IRefreshTokenPayload & ITokenResponse;
