@@ -1,6 +1,10 @@
 import { InvalidTokenException } from '../../errors';
 
-export const extractToken = (authorization: string): string => {
+export const extractToken = (
+  authorization: string,
+  prefix?: string
+): string => {
+  prefix = prefix || 'Bearer';
   if (!authorization) {
     throw new InvalidTokenException();
   }
@@ -11,7 +15,8 @@ export const extractToken = (authorization: string): string => {
   }
 
   const [scheme, token] = parts;
-  if (!/^Bearer$/i.test(scheme)) {
+  const existsCorrectSchema = scheme.match(new RegExp(prefix, 'i'));
+  if (!existsCorrectSchema) {
     throw new InvalidTokenException();
   }
 
