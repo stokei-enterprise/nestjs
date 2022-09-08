@@ -39,18 +39,75 @@ export const isExpiredDate = (date: Date | number | string): boolean => {
   return now.isAfter(dateToCompare);
 };
 
-export const addDays = (days: number) => {
-  if (!days) {
-    return null;
+export const addSeconds = (
+  seconds: number,
+  startAt?: string | number | Date
+) => {
+  const date = dayjs(startAt || Date.now());
+  if (!seconds) {
+    return date.toDate();
   }
-  const date = dayjs(Date.now());
+  return date.add(seconds, 'second').toDate();
+};
+
+export const addMinutes = (
+  minutes: number,
+  startAt?: string | number | Date
+) => {
+  const date = dayjs(startAt || Date.now());
+  if (!minutes) {
+    return date.toDate();
+  }
+  return date.add(minutes, 'minute').toDate();
+};
+
+export const addHours = (hours: number, startAt?: string | number | Date) => {
+  const date = dayjs(startAt || Date.now());
+  if (!hours) {
+    return date.toDate();
+  }
+  return date.add(hours, 'hour').toDate();
+};
+
+export const addDays = (days: number, startAt?: string | number | Date) => {
+  const date = dayjs(startAt || Date.now());
+  if (!days) {
+    return date.toDate();
+  }
   return date.add(days, 'day').toDate();
 };
 
-export const addMinutes = (minutes: number) => {
-  if (!minutes) {
-    return null;
+export const addWeeks = (weeks: number, startAt?: string | number | Date) => {
+  const date = dayjs(startAt || Date.now());
+  if (!weeks) {
+    return date.toDate();
   }
-  const date = dayjs(Date.now());
-  return date.add(minutes, 'minute').toDate();
+  return date.add(weeks, 'week').toDate();
+};
+
+export const addMonths = (months: number, startAt?: string | number | Date) => {
+  const date = dayjs(startAt || Date.now());
+  if (!months) {
+    return date.toDate();
+  }
+  return date.add(months, 'month').toDate();
+};
+
+export const addQuarters = (
+  quarters: number,
+  startAt?: string | number | Date
+) => {
+  const date = dayjs(startAt || Date.now());
+  if (!quarters) {
+    return date.toDate();
+  }
+  return date.add(quarters, 'quarter').toDate();
+};
+
+export const addYears = (years: number, startAt?: string | number | Date) => {
+  const date = dayjs(startAt || Date.now());
+  if (!years) {
+    return date.toDate();
+  }
+  return date.add(years, 'year').toDate();
 };
