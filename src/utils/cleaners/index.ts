@@ -37,6 +37,16 @@ export const cleanValueNumber = (value: number): number => {
   return null;
 };
 
+export const cleanDate = (date: string | number | Date) => {
+  if (typeof date === 'number') {
+    return cleanValueNumber(date);
+  }
+  if (typeof date === 'string') {
+    return cleanValue(date);
+  }
+  return date;
+};
+
 export const cleanValueBoolean = (value: any): boolean => {
   switch (String(value)) {
     case 'true':
