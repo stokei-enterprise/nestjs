@@ -66,7 +66,7 @@ export class PrismaMapper {
   }
   toWhereDataInterval<TDataType = string>(data: IWhereDataInterval<TDataType>) {
     return {
-      ...this.toWhereData<TDataType>(data?.equals),
+      ...this.toWhereData<TDataType>(data),
       ...(data?.less && {
         lt: data?.less
       }),
@@ -83,7 +83,7 @@ export class PrismaMapper {
   }
   toWhereDataSearch<TDataType = string>(data: IWhereDataSearch<TDataType>) {
     return {
-      ...this.toWhereData<TDataType>(data?.equals),
+      ...this.toWhereData<TDataType>(data),
       ...(data?.search && {
         contains: data?.search,
         mode: 'insensitive'

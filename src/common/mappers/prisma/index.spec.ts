@@ -142,6 +142,18 @@ describe('PrismaMapper', () => {
     });
   });
   describe('toWhereDataInterval', () => {
+    it('should return just equals values', async () => {
+      const dataMock: IWhereDataInterval<number> = {
+        equals: 50
+      };
+      const responseMock = {
+        equals: 50
+      };
+
+      expect(new PrismaMapper().toWhereDataInterval(dataMock)).toStrictEqual(
+        responseMock
+      );
+    });
     it('should return correct where values are less and equal or greater and equal to range', async () => {
       const dataMock: IWhereDataInterval<number> = {
         lessEquals: 50,
@@ -175,6 +187,18 @@ describe('PrismaMapper', () => {
 
   describe('toWhereDataSearch', () => {
     const mode = 'insensitive';
+    it('should return just equals values', async () => {
+      const dataMock: IWhereDataSearch<number> = {
+        equals: 50
+      };
+      const responseMock = {
+        equals: 50
+      };
+
+      expect(new PrismaMapper().toWhereDataInterval(dataMock)).toStrictEqual(
+        responseMock
+      );
+    });
     it('should return the correct search value', async () => {
       const name = 'Jhon Doe';
       const dataMock: IWhereDataSearch<string> = {
