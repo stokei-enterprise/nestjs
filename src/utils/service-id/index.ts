@@ -9,22 +9,12 @@ interface ServiceIdData {
 const microserviceSeparator = '.';
 const moduleSeparator = '_';
 
-const cleanMicroserviceModuleIdPrefix = (value: string): string => {
+const cleanMicroserviceIdPrefix = (value: string): string => {
   try {
     value = value.normalize('NFD').replace(/\p{Diacritic}/gu, '');
     return value.replace(/[^A-Za-z0-9]/g, moduleSeparator)?.toLowerCase();
   } catch (error) {}
   return null;
-};
-
-export const createServiceId = (data: ServiceIdData): string => {
-  const module = cleanMicroserviceModuleIdPrefix(data?.module);
-  const service = cleanMicroserviceModuleIdPrefix(data?.service);
-  const id = cleanValue(data?.id);
-  if (module === service) {
-    return `${service}${microserviceSeparator}${id}`;
-  }
-  return `${service}${moduleSeparator}${module}${microserviceSeparator}${id}`;
 };
 
 export const splitServiceId = (concatId: string): ServiceIdData => {
@@ -33,5 +23,17 @@ export const splitServiceId = (concatId: string): ServiceIdData => {
   );
   const [service = null, module = null] =
     serviceWithModule?.split(moduleSeparator);
-  return { service, module, id };
+  return id && { service, module, id };
+};
+
+export const createServiceId = (data: ServiceIdData): string => {
+  const module = cleanMicroserviceIdPrefix(data?.module);
+  const service = cleanMicroserviceIdPrefix(data?.service);
+  const dataIdSplited = splitServiceId(data?.id);
+  const existsService = !!dataIdSplited?.id;
+  const id = cleanValue(existsService ? dataIdSplited.id : data?.id);
+  if (module === service) {
+    return `${service}${microserviceSeparator}${id}`;
+  }
+  return `${service}${moduleSeparator}${module}${microserviceSeparator}${id}`;
 };
