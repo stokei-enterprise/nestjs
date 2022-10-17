@@ -8,15 +8,15 @@ describe('createServiceId', () => {
         module: 'meuservice',
         id: 'meuid'
       })
-    ).toBe('meuservice.meuid');
+    ).toBe('meuservice_meuid');
   });
   it('should remove service id when data.id has service', () => {
     expect(
       createServiceId({
         service: 'meuservice',
         module: 'meuservice',
-        id: 'otherservice.meuid'
+        id: 'otherservice_meuid'
       })
-    ).toBe('meuservice.meuid');
+    ).toBe('meuservice_meuid');
   });
 });

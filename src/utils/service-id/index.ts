@@ -6,8 +6,8 @@ interface ServiceIdData {
   readonly id: string;
 }
 
-const microserviceSeparator = '.';
-const moduleSeparator = '_';
+const microserviceSeparator = '_';
+const moduleSeparator = '-';
 
 const cleanMicroserviceIdPrefix = (value: string): string => {
   try {
