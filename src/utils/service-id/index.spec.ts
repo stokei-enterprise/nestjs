@@ -5,7 +5,6 @@ describe('createServiceId', () => {
     expect(
       createServiceId({
         service: 'meuservice',
-        module: 'meuservice',
         id: 'meuid'
       })
     ).toBe('meuservice_meuid');
@@ -14,7 +13,6 @@ describe('createServiceId', () => {
     expect(
       createServiceId({
         service: 'meuservice',
-        module: 'meuservice',
         id: 'otherservice_meuid'
       })
     ).toBe('meuservice_meuid');
