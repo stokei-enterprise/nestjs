@@ -51,38 +51,34 @@ export class PrismaMapper {
     };
   }
   toWhereIds(data: string[]) {
-    return (
-      data?.length > 0 && {
-        in: data
-      }
-    );
+    return cleanObject({
+      in: data
+    });
   }
   toWhereData<TDataType = string>(data: IWhereData<TDataType>) {
-    return (
-      data?.equals && {
-        equals: data?.equals
-      }
-    );
+    return cleanObject({
+      equals: data?.equals
+    });
   }
   toWhereDataInterval<TDataType = string>(data: IWhereDataInterval<TDataType>) {
-    return {
+    return cleanObject({
       ...this.toWhereData<TDataType>(data),
-      ...(data?.less && {
+      ...{
         lt: data?.less
-      }),
-      ...(data?.lessEquals && {
+      },
+      ...{
         lte: data?.lessEquals
-      }),
-      ...(data?.greater && {
+      },
+      ...{
         gt: data?.greater
-      }),
-      ...(data?.greaterEquals && {
+      },
+      ...{
         gte: data?.greaterEquals
-      })
-    };
+      }
+    });
   }
   toWhereDataSearch<TDataType = string>(data: IWhereDataSearch<TDataType>) {
-    return {
+    return cleanObject({
       ...this.toWhereData<TDataType>(data),
       ...(data?.search && {
         contains: data?.search,
@@ -96,7 +92,7 @@ export class PrismaMapper {
         endsWith: data?.endsWith,
         mode: 'insensitive'
       })
-    };
+    });
   }
   toPagination(data: IPaginationArgsToPrismaDataPaginationPrismaMapper) {
     if (!data?.page) {
@@ -105,9 +101,9 @@ export class PrismaMapper {
     const limit = getPageLimit(cleanValueNumber(data?.page.limit));
     const pageNumber = cleanValueNumber(data?.page.number) || 1;
     const skip = getPageSkip(pageNumber, limit);
-    return {
+    return cleanObject({
       skip,
       take: limit
-    };
+    });
   }
 }
