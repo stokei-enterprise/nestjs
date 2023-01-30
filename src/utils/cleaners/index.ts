@@ -4,6 +4,7 @@ import {
   IWhereDataInterval,
   IWhereDataSearch
 } from '../../interfaces';
+import { isBoolean } from '../is-boolean';
 
 export const cleanSortValue = (value: IOrderBy): IOrderBy => {
   switch (value) {
@@ -48,16 +49,14 @@ export const cleanDate = (date: string | number | Date) => {
 };
 
 export const cleanValueBoolean = (value: any): boolean => {
-  switch (String(value)) {
-    case 'true':
-    case '1':
-      return true;
-    case 'false':
-    case '0':
-      return false;
-    default:
-      return undefined;
-  }
+  const values = {
+    true: true,
+    '1': true,
+    false: false,
+    '0': false
+  };
+
+  return values[String(value)];
 };
 
 export const cleanSlug = (value: string): string => {
@@ -124,7 +123,7 @@ export const cleanObject = <TData = any>(
       }
       return {
         ...prevData,
-        ...((isAllowEmptyValue || currentValue) && {
+        ...((isAllowEmptyValue || currentValue || isBoolean(currentValue)) && {
           [currentDataKey]: currentValue
         })
       };

@@ -1,10 +1,26 @@
-import { cleanObject } from '.';
+import { cleanObject, cleanValueBoolean } from '.';
 
 describe('Cleaners', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
+  describe('cleanValueBoolean', () => {
+    it('should return an boolean', () => {
+      expect(cleanValueBoolean(true)).toStrictEqual(true);
+      expect(cleanValueBoolean('true')).toStrictEqual(true);
+      expect(cleanValueBoolean(1)).toStrictEqual(true);
+      expect(cleanValueBoolean('1')).toStrictEqual(true);
+
+      expect(cleanValueBoolean('false')).toStrictEqual(false);
+      expect(cleanValueBoolean(false)).toStrictEqual(false);
+      expect(cleanValueBoolean('0')).toStrictEqual(false);
+      expect(cleanValueBoolean(0)).toStrictEqual(false);
+    });
+    it('should return undefined when is not a boolean', () => {
+      expect(cleanValueBoolean('any')).toStrictEqual(undefined);
+    });
+  });
   describe('cleanObject', () => {
     it('should return an object formatted', () => {
       const date = new Date().toISOString();
@@ -12,12 +28,18 @@ describe('Cleaners', () => {
         ids: ['id1', 'id2'],
         name: 'Douglas',
         age: 24,
+        nullableValue: null,
+        undefinedValue: undefined,
+        boolFalse: false,
+        boolTrue: true,
         createdAt: date
       };
       const responseMock = {
         ids: ['id1', 'id2'],
         name: 'Douglas',
         age: 24,
+        boolFalse: false,
+        boolTrue: true,
         createdAt: date
       };
       expect(cleanObject(object)).toStrictEqual(responseMock);
