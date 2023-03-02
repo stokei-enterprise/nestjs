@@ -42,8 +42,8 @@ export function Paginated<T>(classRef: Type<T>): Type<IPaginatedType<T>> {
 export function WherePaginated<T>(classRef: Type<T>): Type<IWhere<T>> {
   @InputType()
   abstract class WherePaginatedType implements IWhere<T> {
-    @Field(() => classRef, { nullable: true })
-    OR?: T;
+    @Field(() => [classRef], { nullable: true })
+    OR?: T[];
 
     @Field(() => classRef, { nullable: true })
     AND?: T;

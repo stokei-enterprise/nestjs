@@ -24,7 +24,7 @@ export interface IWhereDataInterval<TDataType = string>
 
 export type IOperator = 'OR' | 'AND' | 'NOT';
 export interface IWhere<TDataType = Record<string, string>> {
-  OR?: TDataType;
+  OR?: TDataType[];
   AND?: TDataType;
   NOT?: TDataType;
 }

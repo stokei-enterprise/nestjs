@@ -48,19 +48,41 @@ describe('PrismaMapper', () => {
     it('should return correct where values', async () => {
       const dataMock: IWhere<Record<string, IWhereData>> = {
         AND: {
-          teste: {
-            equals: 'meu teste'
+          test: {
+            equals: 'my test'
           }
         },
-        NOT: undefined,
-        OR: undefined
+        NOT: {
+          test: {
+            equals: 'anymore'
+          }
+        },
+        OR: [
+          {
+            test: {
+              equals: 'any'
+            }
+          }
+        ]
       };
       const responseMock = {
         AND: {
-          teste: {
-            equals: 'meu teste'
+          test: {
+            equals: 'my test'
           }
-        }
+        },
+        NOT: {
+          test: {
+            equals: 'anymore'
+          }
+        },
+        OR: [
+          {
+            test: {
+              equals: 'any'
+            }
+          }
+        ]
       };
 
       expect(new PrismaMapper().toWhere(dataMock)).toStrictEqual(responseMock);
@@ -68,15 +90,15 @@ describe('PrismaMapper', () => {
     it('should remove data when data is empty', async () => {
       const dataMock: IWhere<Record<string, IWhereData<string | number>>> = {
         AND: {
-          teste: {
-            equals: 'meu teste'
+          test: {
+            equals: 'my test'
           },
           age: {
             equals: undefined
           }
         },
         NOT: {
-          teste: {
+          test: {
             equals: ''
           }
         },
@@ -84,8 +106,8 @@ describe('PrismaMapper', () => {
       };
       const responseMock = {
         AND: {
-          teste: {
-            equals: 'meu teste'
+          test: {
+            equals: 'my test'
           }
         }
       };
@@ -95,12 +117,12 @@ describe('PrismaMapper', () => {
     it('should return correct data with empty values in NOT option', async () => {
       const dataMock: IWhere<Record<string, IWhereData>> = {
         AND: {
-          teste: {
-            equals: 'meu teste'
+          test: {
+            equals: 'my test'
           }
         },
         NOT: {
-          teste: {
+          test: {
             equals: ''
           }
         },
@@ -108,12 +130,12 @@ describe('PrismaMapper', () => {
       };
       const responseMock = {
         AND: {
-          teste: {
-            equals: 'meu teste'
+          test: {
+            equals: 'my test'
           }
         },
         NOT: {
-          teste: {
+          test: {
             equals: ''
           }
         }

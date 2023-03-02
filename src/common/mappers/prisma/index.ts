@@ -29,16 +29,9 @@ export class PrismaMapper {
     allowIsEmptyValues?: IWhereAllowIsEmptyValues
   ) {
     const mapDTODataToPrisma = (operator: IOperator) => {
-      let operatorData: any = data?.[operator];
+      const operatorData = data?.[operator];
       if (!operatorData) {
         return null;
-      }
-      if (operator === 'OR') {
-        operatorData = Object.entries(operatorData).map(
-          ([currentOperatorDataKey, currentOperatorDataValue]) => ({
-            [currentOperatorDataKey]: currentOperatorDataValue
-          })
-        );
       }
       return {
         [operator]: operatorData
