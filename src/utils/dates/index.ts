@@ -101,7 +101,7 @@ export const addQuarters = (
   if (!quarters) {
     return date.toDate();
   }
-  return date.add(quarters, 'quarter').toDate();
+  return date.add(quarters * 3, 'months').toDate();
 };
 
 export const addYears = (years: number, startAt?: string | number | Date) => {
