@@ -21,7 +21,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Node.js dependencies
-        run: npm install
+        run: npm install --force --legacy-peer-deps
 
       - name: Prettify code
         uses: creyD/prettier_action@v3.3
