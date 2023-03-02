@@ -17,6 +17,11 @@ jobs:
           # Make sure the actual branch is checked out when running on pull requests
           ref: ${{ github.head_ref }}
 
+      - name: Setup Node v18.12.1
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.1
+
       - name: Install Node.js dependencies
         run: npm ci
 
