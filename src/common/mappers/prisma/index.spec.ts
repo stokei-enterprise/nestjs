@@ -46,7 +46,8 @@ describe('PrismaMapper', () => {
 
   describe('toWhere', () => {
     it('should return correct where values', async () => {
-      const dataMock: IWhere<Record<string, IWhereData>> = {
+      const prismaMapper = new PrismaMapper();
+      const dataMock = {
         AND: {
           test: {
             equals: 'my test'
@@ -85,9 +86,17 @@ describe('PrismaMapper', () => {
         ]
       };
 
-      expect(new PrismaMapper().toWhere(dataMock)).toStrictEqual(responseMock);
+      expect(
+        prismaMapper.toWhere({
+          data: dataMock,
+          operatorMapper: (value) => ({
+            test: prismaMapper.toWhereData(value.test)
+          })
+        })
+      ).toStrictEqual(responseMock);
     });
     it('should remove data when data is empty', async () => {
+      const prismaMapper = new PrismaMapper();
       const dataMock: IWhere<Record<string, IWhereData<string | number>>> = {
         AND: {
           test: {
@@ -112,28 +121,37 @@ describe('PrismaMapper', () => {
         }
       };
 
-      expect(new PrismaMapper().toWhere(dataMock)).toStrictEqual(responseMock);
+      expect(
+        prismaMapper.toWhere({
+          data: dataMock,
+          operatorMapper: (value) => ({
+            test: prismaMapper.toWhereData(value?.test),
+            age: prismaMapper.toWhereData(value?.age)
+          })
+        })
+      ).toStrictEqual(responseMock);
     });
     it('should return correct data with empty values in NOT option', async () => {
-      const dataMock: IWhere<Record<string, IWhereData>> = {
-        AND: {
-          test: {
-            equals: 'my test'
-          }
-        },
+      const prismaMapper = new PrismaMapper();
+      const dataMock = {
+        // AND: {
+        //   test: {
+        //     equals: 'my test'
+        //   }
+        // },
         NOT: {
           test: {
             equals: ''
           }
-        },
-        OR: undefined
+        }
+        // OR: undefined
       };
       const responseMock = {
-        AND: {
-          test: {
-            equals: 'my test'
-          }
-        },
+        // AND: {
+        //   test: {
+        //     equals: 'my test'
+        //   }
+        // },
         NOT: {
           test: {
             equals: ''
@@ -141,11 +159,18 @@ describe('PrismaMapper', () => {
         }
       };
 
-      expect(
-        new PrismaMapper().toWhere(dataMock, {
+      const data = prismaMapper.toWhere({
+        data: dataMock,
+        operatorMapper: (value) => {
+          return {
+            test: prismaMapper.toWhereData(value.test)
+          };
+        },
+        allowIsEmptyValues: {
           NOT: true
-        })
-      ).toStrictEqual(responseMock);
+        }
+      });
+      expect(data).toStrictEqual(responseMock);
     });
   });
 

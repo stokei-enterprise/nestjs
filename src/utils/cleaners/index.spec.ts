@@ -22,7 +22,7 @@ describe('Cleaners', () => {
     });
   });
   describe('cleanObject', () => {
-    it('should return an object formatted', () => {
+    it('should remove invalid values when it has invalid data', () => {
       const date = new Date().toISOString();
       const object = {
         ids: ['id1', 'id2'],
@@ -44,7 +44,7 @@ describe('Cleaners', () => {
       };
       expect(cleanObject(object)).toStrictEqual(responseMock);
     });
-    it('should return an array of ids formatted', () => {
+    it('should keep the same object when it has all valid data', () => {
       const object = {
         ids: ['id1', 'id2']
       };
@@ -53,9 +53,19 @@ describe('Cleaners', () => {
       };
       expect(cleanObject(object)).toStrictEqual(responseMock);
     });
+    it('should remove undefined items when array has undefined or null items', () => {
+      const object = [undefined, null, undefined];
+      const responseMock = undefined;
+      expect(cleanObject(object)).toStrictEqual(responseMock);
+    });
+    it('should remove undefined when array has just undefined or null items', () => {
+      const object = [undefined, null, undefined];
+      const responseMock = undefined;
+      expect(cleanObject(object)).toStrictEqual(responseMock);
+    });
     it('should return an object with internal array formatted', () => {
       const object = {
-        accounts: [{ name: 'Douglas' }, { name: 'João' }]
+        accounts: [{ name: 'Douglas' }, { name: 'João', age: null }]
       };
       const responseMock = {
         accounts: [{ name: 'Douglas' }, { name: 'João' }]

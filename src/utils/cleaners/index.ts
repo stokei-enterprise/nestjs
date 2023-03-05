@@ -92,23 +92,41 @@ export const cleanObject = <TData = any>(
   data: TData,
   isAllowEmptyValue?: boolean
 ): any => {
-  if (!data) {
+  if (typeof data === 'undefined') {
     return undefined;
   }
-  const isArrayData = Array.isArray(data);
+  const isAllowEmpty = isBoolean(isAllowEmptyValue) ? isAllowEmptyValue : false;
+  const canReturnValue = (value: any) =>
+    isAllowEmpty || value || isBoolean(value);
+  if (typeof data !== 'object' && canReturnValue(data)) {
+    return data;
+  }
 
+  const isArrayData = Array.isArray(data);
   if (isArrayData) {
-    const isEmptyData = data?.length > 0;
-    if (!isEmptyData) {
+    const isEmptyData = !data?.length;
+    if (isEmptyData) {
       return undefined;
     }
-    return data.map((currentData) => {
-      if (typeof currentData === 'object') {
-        return cleanObject(currentData, isAllowEmptyValue);
-      }
-      return currentData;
-    });
+    const array = data
+      .map((currentData) => {
+        if (typeof currentData === 'object') {
+          return cleanObject(currentData, isAllowEmpty);
+        }
+        return currentData;
+      })
+      ?.filter(Boolean);
+    const isEmptyArray = !array?.length;
+    if (isEmptyArray) {
+      return undefined;
+    }
+    return array;
   }
+  console.log({
+    can: canReturnValue(data),
+    data,
+    typeof: typeof data
+  });
 
   const dataArray = Object.entries(data);
   const isEmptyData = dataArray?.length > 0;
@@ -117,13 +135,10 @@ export const cleanObject = <TData = any>(
   }
   const result = dataArray.reduce(
     (prevData, [currentDataKey, currentDataValue]) => {
-      let currentValue = currentDataValue;
-      if (typeof currentDataValue === 'object') {
-        currentValue = cleanObject(currentDataValue, isAllowEmptyValue);
-      }
+      const currentValue = cleanObject(currentDataValue, isAllowEmpty);
       return {
         ...prevData,
-        ...((isAllowEmptyValue || currentValue || isBoolean(currentValue)) && {
+        ...(canReturnValue(currentValue) && {
           [currentDataKey]: currentValue
         })
       };

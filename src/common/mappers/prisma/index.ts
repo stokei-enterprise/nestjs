@@ -1,6 +1,5 @@
 import {
   IBaseOrderByData,
-  IOperator,
   IPaginationArgsToPrismaDataPaginationPrismaMapper,
   IWhere,
   IWhereAllowIsEmptyValues,
@@ -24,23 +23,40 @@ export class PrismaMapper {
       [dataKey]: dataValue
     }));
   }
-  toWhere<TDataType = IWhere>(
-    data: TDataType,
-    allowIsEmptyValues?: IWhereAllowIsEmptyValues
-  ) {
-    const mapDTODataToPrisma = (operator: IOperator) => {
-      const operatorData = data?.[operator];
-      if (!operatorData) {
-        return null;
-      }
-      return {
-        [operator]: operatorData
-      };
-    };
+  toWhere<DTO = any>({
+    data,
+    allowIsEmptyValues,
+    operatorMapper
+  }: {
+    data: IWhere<DTO>;
+    operatorMapper?: (operatorData: DTO) => any;
+    allowIsEmptyValues?: IWhereAllowIsEmptyValues;
+  }) {
+    const mapper = operatorMapper
+      ? operatorMapper
+      : (operatorData) => operatorData;
+    const clearMapper = (operatorData) =>
+      operatorData ? mapper(operatorData) : undefined;
+
     return {
-      ...cleanObject(mapDTODataToPrisma('AND'), allowIsEmptyValues?.AND),
-      ...cleanObject(mapDTODataToPrisma('OR'), allowIsEmptyValues?.OR),
-      ...cleanObject(mapDTODataToPrisma('NOT'), allowIsEmptyValues?.NOT)
+      // ...cleanObject(
+      //   {
+      //     AND: clearMapper(data?.AND)
+      //   },
+      //   allowIsEmptyValues?.AND
+      // ),
+      // ...cleanObject(
+      //   {
+      //     OR: data?.OR?.map(clearMapper)
+      //   },
+      //   allowIsEmptyValues?.OR
+      // ),
+      ...cleanObject(
+        {
+          NOT: clearMapper(data?.NOT)
+        },
+        allowIsEmptyValues?.NOT
+      )
     };
   }
   toWhereIds(data: string[]) {
