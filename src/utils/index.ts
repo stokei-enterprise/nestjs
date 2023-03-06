@@ -8,5 +8,6 @@ export * from './get-page-limit';
 export * from './get-page-skip';
 export * from './hidden-private-data-from-object';
 export * from './is-boolean';
+export * from './is-undefined';
 export * from './message-pattern-name';
 export * from './service-id';

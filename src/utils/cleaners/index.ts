@@ -98,6 +98,7 @@ export const cleanObject = <TData = any>(
   const isAllowEmpty = isBoolean(isAllowEmptyValue) ? isAllowEmptyValue : false;
   const canReturnValue = (value: any) =>
     !!(isAllowEmpty || value || isBoolean(value));
+
   if (typeof data !== 'object') {
     if (canReturnValue(data)) {
       return data;
@@ -126,18 +127,18 @@ export const cleanObject = <TData = any>(
     return array;
   }
 
-  const dataArray = Object.entries(data);
-  const isEmptyData = dataArray?.length > 0;
-  if (!isEmptyData) {
+  const objectEntries = Object.entries(data);
+  const isEmptyObject = objectEntries?.length > 0;
+  if (!isEmptyObject) {
     return undefined;
   }
-  const result = dataArray.reduce(
-    (prevData, [currentDataKey, currentDataValue]) => {
-      const currentValue = cleanObject(currentDataValue, isAllowEmpty);
+  const result = objectEntries.reduce(
+    (prevObject, [currentObjectKey, currentObjectValue]) => {
+      const currentValue = cleanObject(currentObjectValue, isAllowEmpty);
       return {
-        ...prevData,
+        ...prevObject,
         ...(canReturnValue(currentValue) && {
-          [currentDataKey]: currentValue
+          [currentObjectKey]: currentValue
         })
       };
     },

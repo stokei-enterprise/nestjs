@@ -11,7 +11,8 @@ import {
   cleanObject,
   cleanValueNumber,
   getPageLimit,
-  getPageSkip
+  getPageSkip,
+  isUndefined
 } from '../../../utils';
 
 export class PrismaMapper {
@@ -59,44 +60,48 @@ export class PrismaMapper {
     };
   }
   toWhereIds(data: string[]) {
-    return {
-      in: data
-    };
+    return !isUndefined(data)
+      ? {
+          in: data
+        }
+      : undefined;
   }
   toWhereData<TDataType = string>(data: IWhereData<TDataType>) {
-    return {
-      equals: data?.equals
-    };
+    return !isUndefined(data?.equals)
+      ? {
+          equals: data?.equals
+        }
+      : undefined;
   }
   toWhereDataInterval<TDataType = string>(data: IWhereDataInterval<TDataType>) {
     return {
       ...this.toWhereData<TDataType>(data),
-      ...{
+      ...(!isUndefined(data?.less) && {
         lt: data?.less
-      },
-      ...{
+      }),
+      ...(!isUndefined(data?.lessEquals) && {
         lte: data?.lessEquals
-      },
-      ...{
+      }),
+      ...(!isUndefined(data?.greater) && {
         gt: data?.greater
-      },
-      ...{
+      }),
+      ...(!isUndefined(data?.greaterEquals) && {
         gte: data?.greaterEquals
-      }
+      })
     };
   }
   toWhereDataSearch<TDataType = string>(data: IWhereDataSearch<TDataType>) {
     return {
       ...this.toWhereData<TDataType>(data),
-      ...(data?.search && {
+      ...(!isUndefined(data?.search) && {
         contains: data?.search,
         mode: 'insensitive'
       }),
-      ...(data?.startsWith && {
+      ...(!isUndefined(data?.startsWith) && {
         startsWith: data?.startsWith,
         mode: 'insensitive'
       }),
-      ...(data?.endsWith && {
+      ...(!isUndefined(data?.endsWith) && {
         endsWith: data?.endsWith,
         mode: 'insensitive'
       })
