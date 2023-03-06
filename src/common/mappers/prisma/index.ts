@@ -8,8 +8,8 @@ import {
   IWhereDataSearch
 } from '../../../interfaces';
 import {
-  cleanObject,
   cleanValueNumber,
+  cleanWhere,
   getPageLimit,
   getPageSkip,
   isUndefined
@@ -33,31 +33,11 @@ export class PrismaMapper {
     operatorMapper?: (operatorData: DTO) => any;
     allowIsEmptyValues?: IWhereAllowIsEmptyValues;
   }) {
-    const mapper = operatorMapper
-      ? operatorMapper
-      : (operatorData) => operatorData;
-    const clearMapper = (operatorData) =>
-      operatorData ? mapper(operatorData) : undefined;
-    return {
-      ...cleanObject(
-        {
-          AND: clearMapper(data?.AND)
-        },
-        allowIsEmptyValues?.AND
-      ),
-      ...cleanObject(
-        {
-          OR: data?.OR?.map(clearMapper)
-        },
-        allowIsEmptyValues?.OR
-      ),
-      ...cleanObject(
-        {
-          NOT: clearMapper(data?.NOT)
-        },
-        allowIsEmptyValues?.NOT
-      )
-    };
+    return cleanWhere({
+      data,
+      operatorMapper,
+      allowIsEmptyValues
+    });
   }
   toWhereIds(data: string[]) {
     return !isUndefined(data)

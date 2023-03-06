@@ -1,5 +1,7 @@
 import {
   IOrderBy,
+  IWhere,
+  IWhereAllowIsEmptyValues,
   IWhereData,
   IWhereDataInterval,
   IWhereDataSearch
@@ -15,7 +17,7 @@ export const cleanSortValue = (value: IOrderBy): IOrderBy => {
     case '-1':
       return 'desc';
     default:
-      return null;
+      return undefined;
   }
 };
 
@@ -23,19 +25,19 @@ export const cleanValue = (value: string): string => {
   if (value) {
     return String(value).trim();
   }
-  return null;
+  return '';
 };
 
 export const cleanValueNumber = (value: number): number => {
   try {
     if (isNaN(value)) {
-      return null;
+      return undefined;
     }
     if (value || value === 0) {
       return Number(value);
     }
   } catch (error) {}
-  return null;
+  return undefined;
 };
 
 export const cleanDate = (date: string | number | Date) => {
@@ -67,7 +69,7 @@ export const cleanSlug = (value: string): string => {
       return value.replace(/[^A-Za-z0-9]/g, '')?.toLowerCase();
     }
   } catch (error) {}
-  return null;
+  return '';
 };
 
 export const cleanUsername = (value: string): string => {
@@ -78,14 +80,14 @@ export const cleanUsername = (value: string): string => {
       return value.replace(/[^A-Za-z0-9]/g, '')?.toLowerCase();
     }
   } catch (error) {}
-  return null;
+  return '';
 };
 
 export const cleanEmail = (value: string): string => {
   try {
     return cleanValue(value)?.toLowerCase();
   } catch (error) {}
-  return null;
+  return '';
 };
 
 export const cleanObject = <TData = any>(
@@ -149,6 +151,42 @@ export const cleanObject = <TData = any>(
     return undefined;
   }
   return result;
+};
+
+export const cleanWhere = <DTO = any>({
+  data,
+  allowIsEmptyValues,
+  operatorMapper
+}: {
+  data: IWhere<DTO>;
+  operatorMapper?: (operatorData: DTO) => any;
+  allowIsEmptyValues?: IWhereAllowIsEmptyValues;
+}) => {
+  const mapper = operatorMapper
+    ? operatorMapper
+    : (operatorData) => operatorData;
+  const cleanMapper = (operatorData) =>
+    operatorData ? mapper(operatorData) : undefined;
+  return {
+    ...cleanObject(
+      {
+        AND: cleanMapper(data?.AND)
+      },
+      allowIsEmptyValues?.AND
+    ),
+    ...cleanObject(
+      {
+        OR: data?.OR?.map(cleanMapper)
+      },
+      allowIsEmptyValues?.OR
+    ),
+    ...cleanObject(
+      {
+        NOT: cleanMapper(data?.NOT)
+      },
+      allowIsEmptyValues?.NOT
+    )
+  };
 };
 
 export const cleanWhereDataString = (

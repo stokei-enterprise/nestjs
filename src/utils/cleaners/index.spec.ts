@@ -1,4 +1,11 @@
-import { cleanObject, cleanValueBoolean } from '.';
+import { IWhere, IWhereData } from '../../interfaces';
+import {
+  cleanObject,
+  cleanValueBoolean,
+  cleanWhere,
+  cleanWhereDataNumber,
+  cleanWhereDataString
+} from '.';
 
 describe('Cleaners', () => {
   afterEach(() => {
@@ -21,6 +28,135 @@ describe('Cleaners', () => {
       expect(cleanValueBoolean('any')).toStrictEqual(undefined);
     });
   });
+
+  describe('cleanWhere', () => {
+    it('should return correct where values', async () => {
+      const dataMock = {
+        AND: {
+          test: {
+            equals: 'my test'
+          }
+        },
+        NOT: {
+          test: {
+            equals: 'anymore'
+          }
+        },
+        OR: [
+          {
+            test: {
+              equals: 'any'
+            }
+          }
+        ]
+      };
+      const responseMock = {
+        AND: {
+          test: {
+            equals: 'my test'
+          }
+        },
+        NOT: {
+          test: {
+            equals: 'anymore'
+          }
+        },
+        OR: [
+          {
+            test: {
+              equals: 'any'
+            }
+          }
+        ]
+      };
+
+      expect(
+        cleanWhere({
+          data: dataMock,
+          operatorMapper: (value) => ({
+            test: cleanWhereDataString(value.test)
+          })
+        })
+      ).toStrictEqual(responseMock);
+    });
+    it('should remove data when data is empty', async () => {
+      const dataMock: IWhere<Record<string, IWhereData<string | number>>> = {
+        AND: {
+          test: {
+            equals: 'my test'
+          },
+          age: {
+            equals: undefined
+          }
+        },
+        NOT: {
+          test: {
+            equals: ''
+          }
+        },
+        OR: undefined
+      };
+      const responseMock = {
+        AND: {
+          test: {
+            equals: 'my test'
+          }
+        }
+      };
+
+      expect(
+        cleanWhere({
+          data: dataMock,
+          operatorMapper: (value) => ({
+            test: cleanWhereDataString(value?.test as any),
+            age: cleanWhereDataNumber(value?.age as any)
+          })
+        })
+      ).toStrictEqual(responseMock);
+    });
+    it('should return correct data with empty values in NOT option', async () => {
+      const dataMock = {
+        AND: {
+          test: {
+            equals: 'my test'
+          }
+        },
+        NOT: {
+          test: {
+            equals: ''
+          }
+        },
+        OR: undefined
+      };
+      const responseMock = {
+        AND: {
+          test: {
+            equals: 'my test'
+          }
+        },
+        NOT: {
+          test: {
+            equals: ''
+          }
+        }
+      };
+
+      expect(
+        cleanWhere({
+          data: dataMock,
+          operatorMapper: (value) => {
+            return {
+              test: cleanWhereDataString(value.test)
+            };
+          },
+          allowIsEmptyValues: {
+            NOT: true
+          }
+        })
+      ).toStrictEqual(responseMock);
+    });
+  });
+
   describe('cleanObject', () => {
     it('should remove invalid values when it has invalid data', () => {
       const date = new Date().toISOString();
