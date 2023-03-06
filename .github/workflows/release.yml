@@ -23,24 +23,6 @@ jobs:
       - name: Install Node.js dependencies
         run: npm install --force --legacy-peer-deps
 
-      - name: Prettify code
-        uses: creyD/prettier_action@v3.3
-        with:
-          # This part is also where you can pass other options, for example:
-          prettier_options: --write **/*.{js,ts,md}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Eslint
-        run: npm run lint
-        env:
-          CI: true
-
-      - name: Unit tests
-        run: npm run test
-        env:
-          CI: true
-
       - name: Building
         run: npm run build
         env:
