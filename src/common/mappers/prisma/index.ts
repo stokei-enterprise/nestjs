@@ -37,20 +37,19 @@ export class PrismaMapper {
       : (operatorData) => operatorData;
     const clearMapper = (operatorData) =>
       operatorData ? mapper(operatorData) : undefined;
-
     return {
-      // ...cleanObject(
-      //   {
-      //     AND: clearMapper(data?.AND)
-      //   },
-      //   allowIsEmptyValues?.AND
-      // ),
-      // ...cleanObject(
-      //   {
-      //     OR: data?.OR?.map(clearMapper)
-      //   },
-      //   allowIsEmptyValues?.OR
-      // ),
+      ...cleanObject(
+        {
+          AND: clearMapper(data?.AND)
+        },
+        allowIsEmptyValues?.AND
+      ),
+      ...cleanObject(
+        {
+          OR: data?.OR?.map(clearMapper)
+        },
+        allowIsEmptyValues?.OR
+      ),
       ...cleanObject(
         {
           NOT: clearMapper(data?.NOT)
@@ -60,17 +59,17 @@ export class PrismaMapper {
     };
   }
   toWhereIds(data: string[]) {
-    return cleanObject({
+    return {
       in: data
-    });
+    };
   }
   toWhereData<TDataType = string>(data: IWhereData<TDataType>) {
-    return cleanObject({
+    return {
       equals: data?.equals
-    });
+    };
   }
   toWhereDataInterval<TDataType = string>(data: IWhereDataInterval<TDataType>) {
-    return cleanObject({
+    return {
       ...this.toWhereData<TDataType>(data),
       ...{
         lt: data?.less
@@ -84,10 +83,10 @@ export class PrismaMapper {
       ...{
         gte: data?.greaterEquals
       }
-    });
+    };
   }
   toWhereDataSearch<TDataType = string>(data: IWhereDataSearch<TDataType>) {
-    return cleanObject({
+    return {
       ...this.toWhereData<TDataType>(data),
       ...(data?.search && {
         contains: data?.search,
@@ -101,7 +100,7 @@ export class PrismaMapper {
         endsWith: data?.endsWith,
         mode: 'insensitive'
       })
-    });
+    };
   }
   toPagination(data: IPaginationArgsToPrismaDataPaginationPrismaMapper) {
     if (!data?.page) {
@@ -110,9 +109,9 @@ export class PrismaMapper {
     const limit = getPageLimit(cleanValueNumber(data?.page.limit));
     const pageNumber = cleanValueNumber(data?.page.number) || 1;
     const skip = getPageSkip(pageNumber, limit);
-    return cleanObject({
+    return {
       skip,
       take: limit
-    });
+    };
   }
 }

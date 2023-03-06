@@ -134,24 +134,24 @@ describe('PrismaMapper', () => {
     it('should return correct data with empty values in NOT option', async () => {
       const prismaMapper = new PrismaMapper();
       const dataMock = {
-        // AND: {
-        //   test: {
-        //     equals: 'my test'
-        //   }
-        // },
+        AND: {
+          test: {
+            equals: 'my test'
+          }
+        },
         NOT: {
           test: {
             equals: ''
           }
-        }
-        // OR: undefined
+        },
+        OR: undefined
       };
       const responseMock = {
-        // AND: {
-        //   test: {
-        //     equals: 'my test'
-        //   }
-        // },
+        AND: {
+          test: {
+            equals: 'my test'
+          }
+        },
         NOT: {
           test: {
             equals: ''

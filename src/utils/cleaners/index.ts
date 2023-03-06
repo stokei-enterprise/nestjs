@@ -92,14 +92,17 @@ export const cleanObject = <TData = any>(
   data: TData,
   isAllowEmptyValue?: boolean
 ): any => {
-  if (typeof data === 'undefined') {
+  if (typeof data === 'undefined' || data === null) {
     return undefined;
   }
   const isAllowEmpty = isBoolean(isAllowEmptyValue) ? isAllowEmptyValue : false;
   const canReturnValue = (value: any) =>
-    isAllowEmpty || value || isBoolean(value);
-  if (typeof data !== 'object' && canReturnValue(data)) {
-    return data;
+    !!(isAllowEmpty || value || isBoolean(value));
+  if (typeof data !== 'object') {
+    if (canReturnValue(data)) {
+      return data;
+    }
+    return undefined;
   }
 
   const isArrayData = Array.isArray(data);
@@ -122,11 +125,6 @@ export const cleanObject = <TData = any>(
     }
     return array;
   }
-  console.log({
-    can: canReturnValue(data),
-    data,
-    typeof: typeof data
-  });
 
   const dataArray = Object.entries(data);
   const isEmptyData = dataArray?.length > 0;
@@ -145,7 +143,7 @@ export const cleanObject = <TData = any>(
     },
     {}
   );
-  const isEmptyResult = !Object.values(result)?.length;
+  const isEmptyResult = !Object.entries(result)?.length;
   if (isEmptyResult) {
     return undefined;
   }
