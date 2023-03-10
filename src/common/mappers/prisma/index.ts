@@ -74,16 +74,13 @@ export class PrismaMapper {
     return {
       ...this.toWhereData<TDataType>(data),
       ...(!isUndefined(data?.search) && {
-        contains: data?.search,
-        mode: 'insensitive'
+        contains: data?.search
       }),
       ...(!isUndefined(data?.startsWith) && {
-        startsWith: data?.startsWith,
-        mode: 'insensitive'
+        startsWith: data?.startsWith
       }),
       ...(!isUndefined(data?.endsWith) && {
-        endsWith: data?.endsWith,
-        mode: 'insensitive'
+        endsWith: data?.endsWith
       })
     };
   }
