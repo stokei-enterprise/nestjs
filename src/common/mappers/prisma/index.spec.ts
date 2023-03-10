@@ -233,7 +233,6 @@ describe('PrismaMapper', () => {
   });
 
   describe('toWhereDataSearch', () => {
-    const mode = 'insensitive';
     it('should return just equals values', async () => {
       const dataMock: IWhereDataSearch<number> = {
         equals: 50
@@ -252,8 +251,7 @@ describe('PrismaMapper', () => {
         search: name
       };
       const responseMock = {
-        contains: name,
-        mode
+        contains: name
       };
 
       expect(new PrismaMapper().toWhereDataSearch(dataMock)).toStrictEqual(
@@ -266,8 +264,7 @@ describe('PrismaMapper', () => {
         startsWith: name
       };
       const responseMock = {
-        startsWith: name,
-        mode
+        startsWith: name
       };
 
       expect(new PrismaMapper().toWhereDataSearch(dataMock)).toStrictEqual(
@@ -280,8 +277,7 @@ describe('PrismaMapper', () => {
         endsWith: name
       };
       const responseMock = {
-        endsWith: name,
-        mode
+        endsWith: name
       };
 
       expect(new PrismaMapper().toWhereDataSearch(dataMock)).toStrictEqual(
@@ -297,8 +293,7 @@ describe('PrismaMapper', () => {
       };
       const responseMock = {
         startsWith: firstname,
-        endsWith: lastname,
-        mode
+        endsWith: lastname
       };
 
       expect(new PrismaMapper().toWhereDataSearch(dataMock)).toStrictEqual(
