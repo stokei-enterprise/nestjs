@@ -5,28 +5,7 @@ import { v4 as uuid } from 'uuid';
 
 import { ParamNotFoundException } from '../../errors';
 
-export const encryptPassword = (
-  password: string,
-  salt: string,
-  secretKey: string
-): string => {
-  if (!password) {
-    throw new ParamNotFoundException('password');
-  }
-  if (!salt) {
-    throw new ParamNotFoundException('salt');
-  }
-  if (!secretKey) {
-    throw new ParamNotFoundException('secretKey');
-  }
-  const key = secretKey + salt;
-  const digest = Base64.stringify(
-    PBKDF2(password, key, {
-      keySize: 512 / 32
-    })
-  );
-  return Base64.stringify(hmacSHA512(digest, key));
-};
+const concatSaltAndPasswordString = '_stk_';
 
 export const generateSalt = (secretKey: string): string => {
   if (!secretKey) {
@@ -36,13 +15,56 @@ export const generateSalt = (secretKey: string): string => {
   return Base64.stringify(hmacSHA512(digest, secretKey + uuid()));
 };
 
-export const comparePassword = (
-  textPassword: string,
-  encryptedPassword: string,
-  salt: string,
-  secretKey: string
-): boolean => {
-  return encryptedPassword === encryptPassword(textPassword, salt, secretKey);
+export const encryptPassword = ({
+  password,
+  secretKey,
+  salt
+}: {
+  password: string;
+  secretKey: string;
+  salt?: string;
+}): string => {
+  if (!password) {
+    throw new ParamNotFoundException('password');
+  }
+  if (!secretKey) {
+    throw new ParamNotFoundException('secretKey');
+  }
+  if (!salt) {
+    salt = generateSalt(secretKey);
+  }
+  const key = secretKey + salt;
+  const digest = Base64.stringify(
+    PBKDF2(password, key, {
+      keySize: 512 / 32
+    })
+  );
+  return (
+    Base64.stringify(hmacSHA512(digest, key)) +
+    concatSaltAndPasswordString +
+    salt
+  );
+};
+
+const getSaltFromPassword = (password: string) => {
+  const salt = password?.split(concatSaltAndPasswordString)?.pop();
+  return salt;
+};
+
+export const comparePassword = ({
+  textPassword,
+  encryptedPassword,
+  secretKey
+}: {
+  textPassword: string;
+  encryptedPassword: string;
+  secretKey: string;
+}): boolean => {
+  const salt = getSaltFromPassword(encryptedPassword);
+  return (
+    encryptedPassword ===
+    encryptPassword({ password: textPassword, salt, secretKey })
+  );
 };
 
 export const encryptAES256 = (text: string, secretKey: string) =>
