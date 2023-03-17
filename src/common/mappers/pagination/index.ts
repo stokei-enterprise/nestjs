@@ -21,8 +21,8 @@ export class PaginationMapper<TItem = any> {
     const previousPage = hasPreviousPage ? currentPage - 1 : firstPage;
 
     return {
-      items: data?.items,
-      totalCount: data?.totalCount,
+      items: data?.items || [],
+      totalCount: data?.totalCount || 0,
       currentPage,
       totalPages,
       firstPage,
