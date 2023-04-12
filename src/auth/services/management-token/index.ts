@@ -44,7 +44,7 @@ export class ManagementTokenService {
 
   createAccessToken(data: IAuthenticatedAccount): string {
     return this.createToken<IAuthenticatedAccount>(data, {
-      expiresIn: '60s'
+      expiresIn: '12h'
     });
   }
 
@@ -54,7 +54,7 @@ export class ManagementTokenService {
 
   createRefreshToken(data: IRefreshTokenPayload): string {
     return this.createToken<IRefreshTokenPayload>(data, {
-      expiresIn: '300s' // 5 min
+      expiresIn: '12h'
     });
   }
 
