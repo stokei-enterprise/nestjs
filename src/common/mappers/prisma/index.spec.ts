@@ -131,6 +131,32 @@ describe('PrismaMapper', () => {
         })
       ).toStrictEqual(responseMock);
     });
+    it('should return toWhereIds when data is an array', async () => {
+      const prismaMapper = new PrismaMapper();
+      const dataMock: IWhere<Record<string, IWhereData<string | string[]>>> = {
+        AND: {
+          test: {
+            equals: ['id1', 'id2', 'id3']
+          }
+        }
+      };
+      const responseMock = {
+        AND: {
+          test: {
+            in: ['id1', 'id2', 'id3']
+          }
+        }
+      };
+
+      expect(
+        prismaMapper.toWhere({
+          data: dataMock,
+          operatorMapper: (value) => ({
+            test: prismaMapper.toWhereData(value?.test)
+          })
+        })
+      ).toStrictEqual(responseMock);
+    });
     it('should return correct data with empty values in NOT option', async () => {
       const prismaMapper = new PrismaMapper();
       const dataMock = {

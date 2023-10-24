@@ -46,14 +46,20 @@ export class PrismaMapper {
         }
       : undefined;
   }
-  toWhereData<TDataType = string>(data: IWhereData<TDataType>) {
-    return !isUndefined(data?.equals)
-      ? {
-          equals: data?.equals
-        }
-      : undefined;
+  toWhereData<TDataType = string | string[]>(data: IWhereData<TDataType>) {
+    if (isUndefined(data?.equals)) {
+      return undefined;
+    }
+    if (Array.isArray(data?.equals)) {
+      return this.toWhereIds(data?.equals);
+    }
+    return {
+      equals: data?.equals
+    };
   }
-  toWhereDataInterval<TDataType = string>(data: IWhereDataInterval<TDataType>) {
+  toWhereDataInterval<TDataType = string | string[]>(
+    data: IWhereDataInterval<TDataType>
+  ) {
     return {
       ...this.toWhereData<TDataType>(data),
       ...(!isUndefined(data?.less) && {
@@ -70,7 +76,9 @@ export class PrismaMapper {
       })
     };
   }
-  toWhereDataSearch<TDataType = string>(data: IWhereDataSearch<TDataType>) {
+  toWhereDataSearch<TDataType = string | string[]>(
+    data: IWhereDataSearch<TDataType>
+  ) {
     return {
       ...this.toWhereData<TDataType>(data),
       ...(!isUndefined(data?.search) && {
