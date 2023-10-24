@@ -40,6 +40,33 @@ export const cleanValueNumber = (value: number): number => {
   return undefined;
 };
 
+export const cleanValueOrValues = (
+  value: string | string[]
+): string | string[] => {
+  if (Array.isArray(value)) {
+    return value?.map((currentValue) => cleanValue(currentValue));
+  }
+  return cleanValue(value);
+};
+
+export const cleanValueNumberOrValueNumbers = (
+  value: number | number[]
+): number | number[] => {
+  if (Array.isArray(value)) {
+    return value?.map((currentValue) => cleanValueNumber(currentValue));
+  }
+  return cleanValueNumber(value);
+};
+
+export const cleanValueBooleanOrValueBooleans = (
+  value: boolean | boolean[]
+): boolean | boolean[] => {
+  if (Array.isArray(value)) {
+    return value?.map((currentValue) => cleanValueBoolean(currentValue));
+  }
+  return cleanValueBoolean(value);
+};
+
 export const cleanDate = (date: string | number | Date) => {
   if (typeof date === 'number') {
     return cleanValueNumber(date);
@@ -190,60 +217,60 @@ export const cleanWhere = <DTO = any>({
 };
 
 export const cleanWhereDataString = (
-  data: IWhereData<string>
-): IWhereData<string> => {
+  data: IWhereData<string | string[]>
+): IWhereData<string | string[]> => {
   return {
-    equals: cleanValue(data?.equals)
+    equals: cleanValueOrValues(data?.equals)
   };
 };
 
 export const cleanWhereDataNumber = (
-  data: IWhereData<number>
-): IWhereData<number> => {
+  data: IWhereData<number | number[]>
+): IWhereData<number | number[]> => {
   return {
-    equals: cleanValueNumber(data?.equals)
+    equals: cleanValueNumberOrValueNumbers(data?.equals)
   };
 };
 
 export const cleanWhereDataBoolean = (
-  data: IWhereData<boolean>
-): IWhereData<boolean> => {
+  data: IWhereData<boolean | boolean[]>
+): IWhereData<boolean | boolean[]> => {
   return {
-    equals: cleanValueBoolean(data?.equals)
+    equals: cleanValueBooleanOrValueBooleans(data?.equals)
   };
 };
 
 export const cleanWhereDataSearch = (
-  data: IWhereDataSearch<string>
-): IWhereDataSearch<string> => {
+  data: IWhereDataSearch<string | string[]>
+): IWhereDataSearch<string | string[]> => {
   return {
-    equals: cleanValue(data?.equals),
-    search: cleanValue(data?.search),
-    startsWith: cleanValue(data?.startsWith),
-    endsWith: cleanValue(data?.endsWith)
+    ...cleanWhereDataString(data),
+    search: cleanValueOrValues(data?.search),
+    startsWith: cleanValueOrValues(data?.startsWith),
+    endsWith: cleanValueOrValues(data?.endsWith)
   };
 };
 
 export const cleanWhereDataIntervalString = (
-  data: IWhereDataInterval<string>
-): IWhereDataInterval<string> => {
+  data: IWhereDataInterval<string | string[]>
+): IWhereDataInterval<string | string[]> => {
   return {
-    equals: cleanValue(data?.equals),
-    less: cleanValue(data?.less),
-    lessEquals: cleanValue(data?.lessEquals),
-    greater: cleanValue(data?.greater),
-    greaterEquals: cleanValue(data?.greaterEquals)
+    equals: cleanValueOrValues(data?.equals),
+    less: cleanValueOrValues(data?.less),
+    lessEquals: cleanValueOrValues(data?.lessEquals),
+    greater: cleanValueOrValues(data?.greater),
+    greaterEquals: cleanValueOrValues(data?.greaterEquals)
   };
 };
 
 export const cleanWhereDataIntervalNumber = (
-  data: IWhereDataInterval<number>
-): IWhereDataInterval<number> => {
+  data: IWhereDataInterval<number | number[]>
+): IWhereDataInterval<number | number[]> => {
   return {
-    equals: cleanValueNumber(data?.equals),
-    less: cleanValueNumber(data?.less),
-    lessEquals: cleanValueNumber(data?.lessEquals),
-    greater: cleanValueNumber(data?.greater),
-    greaterEquals: cleanValueNumber(data?.greaterEquals)
+    equals: cleanValueNumberOrValueNumbers(data?.equals),
+    less: cleanValueNumberOrValueNumbers(data?.less),
+    lessEquals: cleanValueNumberOrValueNumbers(data?.lessEquals),
+    greater: cleanValueNumberOrValueNumbers(data?.greater),
+    greaterEquals: cleanValueNumberOrValueNumbers(data?.greaterEquals)
   };
 };
